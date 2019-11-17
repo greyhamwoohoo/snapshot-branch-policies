@@ -23,7 +23,7 @@ You are required to install the following modules first:
 ```
 Install-Module vsteam
 Install-Module powershell-yaml
-Install-Module azure-devops-snapshot-branch-policies
+Install-Module AzureDevopsSnapshotBranchPolicies
 ```
 
 This module is little more than a wrapper around 'VsTeam' so you must configure VsTeam as follows:
