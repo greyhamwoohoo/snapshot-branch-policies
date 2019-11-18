@@ -12,11 +12,11 @@ steps:
    Install-Module VsTeam -Force
    
    Write-Verbose "Build Number (As String):"
-   Write-Verbose $env:Build_BuildNumber
+   Write-Verbose "$env:Build_BuildNumber"
    
-   [Version] $Version = $env:Build_BuildNumber
+   [Version] $Version = "$env:Build_BuildNumber"
    Write-Verbose "Build Number (As Version):"
-   Write-Verbose $Version
+   Write-Verbose "$Version"
    
    Update-ModuleManifest -Path .\AzureDevopsSnapshotBranchPolicies.psd1 -ModuleVersion $Version
    
