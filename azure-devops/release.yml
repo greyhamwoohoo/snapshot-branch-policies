@@ -1,6 +1,9 @@
 trigger: none
 pr: none
 
+variables:
+- group: PowerShell-Gallery-Publishing-Keys
+
 stages:
 - stage: Build
   jobs:
