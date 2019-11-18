@@ -56,10 +56,12 @@ stages:
       runOnce:
         deploy:
           steps:
+          - download: current
+            artifact: AzureDevopsSnapshotBranchPolicies
           - powershell: |
               Install-Module VsTeam -Force
             
               Publish-Module -Path ".\AzureDevopsSnapshotBranchPolicies" -Repository "PSGallery" -NuGetApiKey "$(PowerShellGalleryReleasePushApiKey)" -Verbose
             failOnStderr: true
-            workingDirectory: 'Build-Artefacts'
+            workingDirectory: '$(Pipeline.Workspace)'
             displayName: 'Publish to PowerShell Gallery'
