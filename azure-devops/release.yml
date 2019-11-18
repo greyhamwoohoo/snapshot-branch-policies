@@ -1,6 +1,7 @@
 pool:
   vmImage: vs2017-win2016
 
+name: 1.0$(Rev:.r)
 trigger: none
 pr: none
 
