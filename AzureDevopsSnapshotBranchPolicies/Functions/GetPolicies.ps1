@@ -35,6 +35,6 @@ function GetPolicies {
         $candidatePolicies = (Get-VSTeamPolicy -ProjectName $ProjectName).Where{ $_.type.id -eq $PolicyId }.Where{ $_.settings.scope.refName -eq $refName }.Where{ $_.settings.scope.repositoryId -eq $RepositoryId }
 Write-Verbose "SUCCESS: There are $($candidatePolicies.Count) policies for $PolicyFriendlyName"
 
-        return ,$candidatePolicies;
+        return $candidatePolicies;
     }
 }
