@@ -49,7 +49,7 @@ function GetCheckForLinkedWorkItemsPolicy {
             $returnValue | Add-Member -MemberType NoteProperty -Name "Enabled" -Value $false
         }
 
-        ($returnValue.Keys).ForEach{ Write-Verbose "$($_)=$($returnValue[$_])"}
+        Write-Verbose $returnValue
 
         return $returnValue;
     }
