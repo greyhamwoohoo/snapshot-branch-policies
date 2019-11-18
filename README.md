@@ -1,4 +1,4 @@
-[![Build status](https://greyhamwoohoo.visualstudio.com/PowerShell-Modules/_apis/build/status/SnapshotBranchPolicies-Main)](https://greyhamwoohoo.visualstudio.com/PowerShell-Modules/_build/latest?definitionId=14)
+[![Build Status](https://greyhamwoohoo.visualstudio.com/PowerShell-Modules/_apis/build/status/SnapshotBranchPolicies-Release?branchName=master)](https://greyhamwoohoo.visualstudio.com/PowerShell-Modules/_build/latest?definitionId=15&branchName=master)
 
 # azure-devops-snapshot-branch-policies
 Manage Configuration Drift of your Azure DevOps Branch Policies (Git Repositories only).

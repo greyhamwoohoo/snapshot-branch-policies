@@ -1,6 +1,8 @@
 trigger: none
 pr: none
 
+name: 1.0$(Rev:.r)
+
 variables:
 - group: PowerShell-Gallery-Publishing-Keys
 
