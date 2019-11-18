@@ -1,40 +1,63 @@
-pool:
-  vmImage: vs2017-win2016
-
-name: 1.0$(Rev:.r)
 trigger: none
 pr: none
 
-steps:
-- powershell: |
-   $VerbosePreference="Continue"
-   
-   Install-Module VsTeam -Force
-   
-   Write-Verbose "Build Number (As String):"
-   Write-Verbose "$env:Build_BuildNumber"
-   
-   [Version] $Version = "$env:Build_BuildNumber"
-   Write-Verbose "Build Number (As Version):"
-   Write-Verbose "$Version"
-   
-   Update-ModuleManifest -Path .\AzureDevopsSnapshotBranchPolicies.psd1 -ModuleVersion $Version
-   
-  failOnStderr: true
-  workingDirectory: AzureDevopsSnapshotBranchPolicies
-  displayName: 'Update Module Manifest'
+variables:
+- group: PowerShell-Gallery-Publishing-Keys
 
-- powershell: |
-   Install-Module PSScriptAnalyzer -MinimumVersion 1.17.1 -Scope CurrentUser -AllowClobber -Force
-   
-   Invoke-ScriptAnalyzer -Path . -Recurse -Severity Warning,Error -EnableExit
-   
-  failOnStderr: true
-  workingDirectory: AzureDevopsSnapshotBranchPolicies
-  displayName: 'Run Script Analyzer'
+stages:
+- stage: Build
+  jobs:
+  - job: Build
+    pool:
+      vmImage: vs2017-win2016
 
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish SnapshotBranchPolicies'
-  inputs:
-    PathtoPublish: AzureDevopsSnapshotBranchPolicies
-    ArtifactName: AzureDevopsSnapshotBranchPolicies
+    steps:
+    - powershell: |
+        $VerbosePreference="Continue"
+      
+        Install-Module VsTeam -Force
+      
+        Write-Verbose "Build Number (As String):"
+        Write-Verbose $env:Build_BuildNumber
+      
+        $Version = [Version] $env:Build_BuildNumber
+        Write-Verbose "Build Number (As Version):"
+        Write-Verbose $Version
+      
+        Update-ModuleManifest -Path .\AzureDevopsSnapshotBranchPolicies.psd1 -ModuleVersion $Version
+      
+      failOnStderr: true
+      workingDirectory: AzureDevopsSnapshotBranchPolicies
+      displayName: "Update Module Manifest"
+    - powershell: |
+        Install-Module PSScriptAnalyzer -MinimumVersion 1.17.1 -Scope CurrentUser -AllowClobber -Force
+      
+        Invoke-ScriptAnalyzer -Path . -Recurse -Severity Warning,Error -EnableExit
+      
+      failOnStderr: true
+      workingDirectory: AzureDevopsSnapshotBranchPolicies
+      displayName: 'Run Script Analyzer'
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish SnapshotBranchPolicies'
+      inputs:
+        PathtoPublish: AzureDevopsSnapshotBranchPolicies
+        ArtifactName: AzureDevopsSnapshotBranchPolicies
+
+- stage: PublishToPowerShellGallery
+  jobs:
+  - deployment: 
+    pool:
+      vmImage: vs2017-win2016
+    environment: Production-PowerShellGallery
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - powershell: |
+              Install-Module VsTeam -Force
+            
+              Publish-Module -Path ".\AzureDevopsSnapshotBranchPolicies" -Repository "PSGallery" -NuGetApiKey "$(PowerShellGalleryReleasePushApiKey)" -Verbose
+            failOnStderr: true
+            workingDirectory: 'Build-Artefacts'
+            displayName: 'Publish to PowerShell Gallery'
