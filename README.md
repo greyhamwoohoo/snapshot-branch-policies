@@ -1,7 +1,28 @@
 [![Build Status](https://greyhamwoohoo.visualstudio.com/PowerShell-Modules/_apis/build/status/SnapshotBranchPolicies-Release?branchName=master)](https://greyhamwoohoo.visualstudio.com/PowerShell-Modules/_build/latest?definitionId=15&branchName=master)
 
 # azure-devops-snapshot-branch-policies
-Manage Configuration Drift of your Azure DevOps Branch Policies (Git Repositories only).
+Identify Configuration Drift of your Azure DevOps Branch Policies (Git Repositories only).
+
+This module will let you snapshot and source control a 'Golden' copy of your Branch Policies in YAML. For example:
+
+```
+ProjectName: bootstrapping
+RefName: refs/heads/master
+RepositoryName: bootstrapping
+AutomaticReviewersPolicies:
+- Blocking: true
+  CreatorVoteCounts: false
+  Enabled: true
+  FilenamePatterns:
+  - c:\temp*
+  - yeha.woo
+  Message: theFeedMessage
+  RequiredReviewerStorageKeyIds:
+  - 11111111-20a0-41d6-9be5-eb913aca77b6
+  - 11111112-1423-4dc2-8d35-84f1bac1417d
+```
+
+By taking a new snapshot and comparing it with the 'Golden' copy, you can identify drift. 
 
 All Policies on the Branch Policies page are supported:
 
